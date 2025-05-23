@@ -20,6 +20,12 @@ class ListsController < ApplicationController
       render :new, status: :unprocessable_entity
     end
   end
+  
+  def destroy
+  @list = List.find(params[:id])
+  @list.destroy!
+  redirect_to lists_path, notice: "Liste supprimée avec succès", status: :see_other
+  end
 
   private
 
@@ -27,5 +33,3 @@ class ListsController < ApplicationController
     params.require(:list).permit(:name)
   end
 end
-
-

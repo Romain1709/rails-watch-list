@@ -1,13 +1,27 @@
 <h1><%= @list.name %></h1>
-<%= link_to "Back to all lists", lists_path %>
+
+<%= link_to "← Retour aux listes", lists_path, class: "btn btn-primary mt-3 mb-3" %>
+
 <h2>Films dans cette liste :</h2>
-<ul>
+
+<ul class="list-unstyled">
   <% @list.bookmarks.each do |bookmark| %>
-    <li>
-      <strong><%= bookmark.movie.title %></strong> — <%= bookmark.comment %>
-      <%= link_to "Supprimer", bookmark_path(bookmark), method: :delete, data: { confirm: "Êtes-vous sûr ?" } %>
+    <li class="mb-4 border p-3 rounded">
+      <h3><%= bookmark.movie.title %></h3>
+      <% if bookmark.movie.poster_url.present? %>
+        <%= image_tag bookmark.movie.poster_url, alt: bookmark.movie.title, style: "width: 200px;" %>
+      <% end %>
+      <p><strong>Résumé :</strong> <%= bookmark.movie.overview %></p>
+      <p><strong>Note :</strong> <%= bookmark.movie.rating %> / 10</p>
+      <p><strong>Commentaire perso :</strong> <%= bookmark.comment %></p>
+
+      <%= button_to "Supprimer", bookmark_path(bookmark), method: :delete, data: { confirm: "Êtes-vous sûr ?" }, class: "btn btn-dark mt-2" %>
     </li>
   <% end %>
 </ul>
 
-<%= link_to "Ajouter un film", new_list_bookmark_path(@list) %>
+<%= link_to "➕ Ajouter un film", new_list_bookmark_path(@list), class: "btn btn-primary mt-3" %>
+
+<hr>
+
+<%= button_to "🗑️ Supprimer cette liste", list_path(@list), method: :delete, data: { confirm: "Supprimer cette liste ? Cela supprimera aussi tous ses bookmarks." }, class: "btn btn-dark mt-3" %>
